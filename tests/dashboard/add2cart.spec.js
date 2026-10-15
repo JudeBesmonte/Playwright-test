@@ -6,10 +6,14 @@ test('A sample test that adds an item to cart', async ({ page }) => {
   await page.getByPlaceholder('Password').fill('secret_sauce');
   await page.getByRole('button', { name: 'Login' }).click();
   await expect(page).toHaveURL(/inventory/);
-  // await page.getByRole ('button', {name:'Sauce Labs Backpack'},).first().click();
-  // await page.getByRole ('button', {name:'Add to cart'}).click();
-  await page.getByRole ('button', {name:'Add to cart'}).nth(2).click();
 
-  //check-out order
-  await page.getByRole ('button', {name:'shopping_cart_link'}).click();
+  // 1. find the card for this product
+  const backpackCard = page.locator('[data-test="inventory-item"]').filter({ hasText: 'Sauce Labs Backpack' });
+  const blackshirtCart = page.locator('[data-test="inventory-item]').filter({ hasText:'Sauce Labs Bolt T-Shirt'});
+  // 2. click the button inside that card only
+  await backpackCard.getByRole('button', { name: 'Add to cart' }).click();
+  await blackshirtCart.getByRole('button', { name: 'Add to cart' }).click();
+  // 3. verify it worked
+  await expect(backpackCard.getByRole('button', { name: 'Remove' })).toBeVisible();
+  await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
 });
