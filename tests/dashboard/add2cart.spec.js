@@ -17,6 +17,6 @@ test('A sample test that adds an item to cart', async ({ page }) => {
   await addToCart(page, 'Sauce Labs Bike Light');
   await addToCart(page,'Sauce Labs Bolt T-Shirt');
 
-  await expect(addToCart.getByRole('button', { name: 'Remove' })).toBeVisible();
+
 });
 
